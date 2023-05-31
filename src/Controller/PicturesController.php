@@ -29,6 +29,12 @@ class PicturesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            dd( 
+                $picture, 
+                $form->getData()
+            );
+
             $picturesRepository->save($picture, true);
 
             return $this->redirectToRoute('app_pictures_index', [], Response::HTTP_SEE_OTHER);
