@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -34,6 +36,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 40)]
     private ?string $lastname = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Pictures::class)]
+    private Collection $pictures;
+
+    public function __construct()
+    {
+        $this->pictures = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -144,6 +154,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Pictures>
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Pictures $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures->add($picture);
+            $picture->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Pictures $picture): self
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getUser() === $this) {
+                $picture->setUser(null);
+            }
+        }
 
         return $this;
     }
