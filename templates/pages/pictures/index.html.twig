@@ -21,7 +21,10 @@
                 <td>{{ picture.id }}</td>
                 <td>{{ picture.name }}</td>
                 <td>{{ picture.description }}</td>
-                <td>{{ picture.source }}</td>
+                <td>
+                    {{ picture.source }}
+                    <img src="/uploads/{{ picture.source }}" style="width: 200px" alt="">
+                </td>
                 <td>
                     <a href="{{ path('app_pictures_show', {'id': picture.id}) }}">show</a>
                     <a href="{{ path('app_pictures_edit', {'id': picture.id}) }}">edit</a>
