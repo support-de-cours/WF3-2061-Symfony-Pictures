@@ -4,7 +4,7 @@
         <nav class="navbar navbar-expand-lg">
 
             {# Logo / Brand #}
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ url('app_homepage') }}">
                 <img src="{{ asset('build/images/logo/brand.svg') }}" alt="">
             </a>
 
@@ -20,21 +20,33 @@
                 {# Left Nav #}
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Home</a>
+                        <a class="nav-link active" href="{{ url('app_homepage') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Pictures</a>
+                        <a class="nav-link" href="{{ url('app_picture_index') }}">Pictures</a>
                     </li>
                 </ul>
 
                 {# Right Nav (User Nav) #}
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Register</a>
+                        <a class="nav-link" href="{{ url('app_profile') }}">{{ app.user.firstname }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Login</a>
+                        <a class="nav-link" href="{{ url('app_logout') }}">Logout</a>
                     </li>
+                        
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('app_register') }}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('app_login') }}">Login</a>
+                    </li>
+                    {% endif %}
+
                 </ul>
 
             </div>
